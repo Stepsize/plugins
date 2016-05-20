@@ -1,0 +1,12 @@
+{
+  "name": "stepsize",
+  "main": "./lib/stepsize",
+  "version": "0.0.1",
+  "description": "A simple plugin to make Atom work with Stepsize Layer",
+  "keywords": [],
+  "license": "MIT",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  },
+  "dependencies": {}
+}

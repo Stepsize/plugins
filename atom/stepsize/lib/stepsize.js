@@ -1,4 +1,4 @@
-// Contents of this plugin will be reset by Kite on start. Changes you make
+// Contents of this plugin will be reset by Stepsize on start. Changes you make
 // are not guaranteed to persist.
 
 var dgram = require('dgram');
@@ -7,15 +7,15 @@ var fs = require('fs');
 
 var DEBUG = false;
 
-// PLUGIN_ID identifies this plugin so that Kite can send messages back to
-// this plugin. KiteIncoming sets up a UDP server socket to listen to.
+// PLUGIN_ID identifies this plugin so that Stepsize can send messages back to
+// this plugin. StepsizeIncoming sets up a UDP server socket to listen to.
 // PLUGIN_ID will have the form udp://localhost:<port>.
 var PLUGIN_ID = null;
 
-// KiteOutgoing contains logic for sending events to Kite in response to
+// StepsizeOutgoing contains logic for sending events to Stepsize in response to
 // editor actions. We track edit, selections, and focus. These events
 // are sent to a UDP server listening on 127.0.0.1:46625.
-var KiteOutgoing = {
+var StepsizeOutgoing = {
   UDP_HOST: "127.0.0.1",
   UDP_PORT: 46625,
 
@@ -31,7 +31,7 @@ var KiteOutgoing = {
     editor.onDidChangeSelectionRange(this.onSelection.bind(this, editor));
   },
 
-  // send an event to Kite. Because Atom likes to fire many selection and buffer
+  // send an event to Stepsize. Because Atom likes to fire many selection and buffer
   // change events (and in strange orders), we actually accumulate all the events
   // and use setTimeout with a 0ms timeout to indicate when the events have stopped
   // firing. This works because nodejs is single-threaded and the setTimeout gets
@@ -69,7 +69,7 @@ var KiteOutgoing = {
     this.reset();
   },
 
-  // sendError - sends error message to Kite
+  // sendError - sends error message to Stepsize
   sendError: function(data) {
     var editor = atom.workspace.getActiveTextEditor();
     if (!editor) {
@@ -110,22 +110,16 @@ var KiteOutgoing = {
     var cursorPoint = editor.getCursorBufferPosition();
     var cursorOffset = this.pointToOffset(text, cursorPoint);
 
-    // don't send content over 1mb
-    if (text.length > (1 << 20)) {
-      action = "skip";
-      text = "file_too_large";
-    }
-
     return {
       "source": "atom",
       "action": action,
       "filename": editor.getPath(),
-      "text": text,
       "pluginId": PLUGIN_ID,
       "selections": [{
         "start": cursorOffset,
         "end": cursorOffset,
       }],
+      "selected": editor.getSelectedText()
     };
   },
   // pointToOffet takes the contents of the buffer and a point object
@@ -145,9 +139,9 @@ var KiteOutgoing = {
 
 var MARKER_PROPS = {"type": "highlight", "class": "highlight-red"};
 
-// KiteIncoming handles incoming events from Kite - such as applying a suggested
+// StepsizeIncoming handles incoming events from Stepsize - such as applying a suggested
 // fix to the code.
-var KiteIncoming = {
+var StepsizeIncoming = {
   INCOMING_SOCK: dgram.createSocket("udp4"),
   MARKERS: [],
 
@@ -202,7 +196,7 @@ var KiteIncoming = {
     var remote_md5 = suggestion.file_md5 || '';
     if (remote_md5 !== '' && remote_md5 !== file_md5) {
       console.log("buffer mismatch, remote:", remote_md5, "local:", file_md5);
-      KiteOutgoing.sendError({
+      StepsizeOutgoing.sendError({
         "message": "buffer mismatch",
         "user_buffer": text.toString('base64'),
         "user_md5": file_md5,
@@ -301,8 +295,8 @@ var KiteIncoming = {
 
 
 module.exports = {
-  outgoing: KiteOutgoing,
-  incoming: KiteIncoming,
+  outgoing: StepsizeOutgoing,
+  incoming: StepsizeIncoming,
   activate: function() {
     this.incoming.initialize();
     // observeTextEditors takes a callback that fires whenever a new

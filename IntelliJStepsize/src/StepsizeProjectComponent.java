@@ -1,7 +1,7 @@
-// Contents of this plugin will be reset by Kite on start. Changes you make are not guaranteed to persist.
+// Contents of this plugin will be reset by Stepsize on start. Changes you make are not guaranteed to persist.
 
 
-// Internal Kite note: to enable gathering output (stdout+stderr) of debug runs, uncomment the code related
+// Internal Stepsize note: to enable gathering output (stdout+stderr) of debug runs, uncomment the code related
 //   to XDebugProcess.
 // Note this will prevent our plugin from running on PyCharm builds < PC-139.1659 (~April 2015).
 // It's likely that many people use builds before PC-139.1659, so for those we must use some kind of late
@@ -39,13 +39,13 @@ import java.security.MessageDigest;
 import java.util.*;
 import java.util.List;
 
-public class KiteProjectComponent implements ProjectComponent, DocumentListener, /* SelectionListener, */ FileEditorManagerListener, CaretListener{ // ,  XDebuggerManagerListener {
+public class StepsizeProjectComponent implements ProjectComponent, DocumentListener, /* SelectionListener, */ FileEditorManagerListener, CaretListener{ // ,  XDebuggerManagerListener {
 
     private static final boolean DEBUG = false;
 
     private Project m_project;
     private MessageBusConnection m_messageBus;
-    private KiteLocalhostConnection m_kiteConnection;
+    private StepsizeLocalhostConnection m_StepsizeConnection;
 
     // for managing our listeners attached to the window focused events
     private WindowFocusListener m_windowFocusListener;
@@ -60,9 +60,9 @@ public class KiteProjectComponent implements ProjectComponent, DocumentListener,
             new ArrayList<Pair<Editor, List<RangeHighlighter>>>();
 
 
-    public KiteProjectComponent(Project project) throws Exception {
+    public StepsizeProjectComponent(Project project) throws Exception {
         m_project = project;
-        m_kiteConnection = new KiteLocalhostConnection(this);
+        m_StepsizeConnection = new StepsizeLocalhostConnection(this);
 
         m_windowFocusListener = new WindowFocusListener() {
             @Override
@@ -122,9 +122,9 @@ public class KiteProjectComponent implements ProjectComponent, DocumentListener,
             m_messageBus = null;
 
             try {
-                m_kiteConnection.close();
+                m_StepsizeConnection.close();
             } finally {
-                m_kiteConnection = null;
+                m_StepsizeConnection = null;
             }
         }
     }
@@ -132,7 +132,7 @@ public class KiteProjectComponent implements ProjectComponent, DocumentListener,
     @Override
     @NotNull
     public String getComponentName() {
-        return "KiteProjectComponent";
+        return "StepsizeProjectComponent";
     }
 
     @Override
@@ -262,7 +262,7 @@ public class KiteProjectComponent implements ProjectComponent, DocumentListener,
                 return;
             }
 
-            m_kiteConnection.sendEvent(action, file.getCanonicalPath(),
+            m_StepsizeConnection.sendEvent(action, file.getCanonicalPath(),
                     editor.getDocument().getText(), editor.getSelectionModel().getSelectionStart(),
                     editor.getSelectionModel().getSelectionEnd());
         } catch (Exception e) {
@@ -466,7 +466,7 @@ public class KiteProjectComponent implements ProjectComponent, DocumentListener,
             editorTextMd5 = "";
         }
         try {
-            m_kiteConnection.sendSuggestionError(message, suggestion.filename, editorText, editorTextMd5,
+            m_StepsizeConnection.sendSuggestionError(message, suggestion.filename, editorText, editorTextMd5,
                     suggestion.file_base64, suggestion.file_md5, suggestion);
         } catch(Exception e2) {
             logException("Exception trying to report suggestion error", e2);
@@ -478,7 +478,7 @@ public class KiteProjectComponent implements ProjectComponent, DocumentListener,
     // note: we could really get a lot more here, e.g. exit code, which output was stdin/stdout/stderr,
     //   execution time, ...
 
-//    private static final Key<KiteProcessListener> PROCESS_LISTENER_KEY = new Key<KiteProcessListener>("com.kite.KiteProcessListener");
+//    private static final Key<StepsizeProcessListener> PROCESS_LISTENER_KEY = new Key<StepsizeProcessListener>("com.Stepsize.StepsizeProcessListener");
 //
 //    @Override
 //    public void processStarted(@NotNull XDebugProcess xDebugProcess) {
@@ -489,11 +489,11 @@ public class KiteProjectComponent implements ProjectComponent, DocumentListener,
 //            commandLine = ((BaseOSProcessHandler)processHandler).getCommandLine();
 //        }
 //
-//        final KiteProcessListener previousListener = processHandler.getUserData(PROCESS_LISTENER_KEY);
+//        final StepsizeProcessListener previousListener = processHandler.getUserData(PROCESS_LISTENER_KEY);
 //        if (previousListener != null) {
 //            processHandler.removeProcessListener(previousListener);
 //        }
-//        final KiteProcessListener listener = new KiteProcessListener(commandLine);
+//        final StepsizeProcessListener listener = new StepsizeProcessListener(commandLine);
 //        processHandler.addProcessListener(listener);
 //        processHandler.putUserData(PROCESS_LISTENER_KEY, listener);
 //    }
@@ -502,12 +502,12 @@ public class KiteProjectComponent implements ProjectComponent, DocumentListener,
 //    public void processStopped(@NotNull XDebugProcess xDebugProcess) {
 //    }
 //
-//    private class KiteProcessListener implements ProcessListener {
+//    private class StepsizeProcessListener implements ProcessListener {
 //
 //        private String m_commandLine;
 //        private StringBuilder m_text = new StringBuilder();
 //
-//        public KiteProcessListener(String commandLine) {
+//        public StepsizeProcessListener(String commandLine) {
 //            m_commandLine = commandLine;
 //        }
 //

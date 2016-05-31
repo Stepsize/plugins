@@ -1,4 +1,4 @@
-// Contents of this plugin will be reset by Kite on start. Changes you make are not guaranteed to persist.
+// Contents of this plugin will be reset by Stepsize on start. Changes you make are not guaranteed to persist.
 
 
 import com.google.gson.Gson;
@@ -13,19 +13,19 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KiteLocalhostConnection {
+public class StepsizeLocalhostConnection {
 
     private static final String UDP_HOST = "127.0.0.1";
     private static final int UDP_PORT = 46625;
     private static final int INBOUND_RECEIVE_BUFFER_SIZE = 10*1024*2014;  // 10 MB
 
-    private KiteProjectComponent m_projectComponent;
+    private StepsizeProjectComponent m_projectComponent;
     private DatagramSocket m_outbound;
     private DatagramSocket m_inbound;
     private final int m_inboundPort;
     private final String m_pluginID;
 
-    public KiteLocalhostConnection(KiteProjectComponent projectComponent) throws Exception {
+    public StepsizeLocalhostConnection(StepsizeProjectComponent projectComponent) throws Exception {
         m_projectComponent = projectComponent;
         m_outbound = new DatagramSocket();
 
@@ -42,7 +42,7 @@ public class KiteLocalhostConnection {
         OutboundEvent event = new OutboundEvent();
         event.action = action;
         event.filename = filename;
-        event.text = text;
+        event.selected = text.substring(selStart, selEnd);
         event.pluginId = m_pluginID;
 
         OutboundEventSelectionRange selRange = new OutboundEventSelectionRange();
@@ -53,7 +53,7 @@ public class KiteLocalhostConnection {
 
         if(text.length() > 1024 * 1024) {
             event.action = "skip";
-            event.text = "file_too_large";
+            event.selected = "file_too_large";
         }
 
         sendJson(new Gson().toJson(event));
@@ -76,7 +76,7 @@ public class KiteLocalhostConnection {
         OutboundErrorEvent event = new OutboundErrorEvent();
         event.action = "error";
         event.filename = filename;
-        event.text = text;
+        event.selected = text;
         event.pluginId = m_pluginID;
         sendJson(new Gson().toJson(event));
     }
@@ -147,7 +147,7 @@ class OutboundEvent {
     String source = "intellij";
     String action;
     String filename;
-    String text;
+    String selected;
     String pluginId;
     List<OutboundEventSelectionRange> selections;
 }
@@ -161,7 +161,7 @@ class OutboundErrorEvent {
     String source = "intellij";
     String action;
     String filename;
-    String text;
+    String selected;
     String pluginId;
 }
 

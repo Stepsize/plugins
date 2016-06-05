@@ -11,7 +11,7 @@ var DEBUG = false;
 // are sent to a UDP server listening on 127.0.0.1:46625.
 var StepsizeOutgoing = {
   UDP_HOST: "127.0.0.1",
-  UDP_PORT: 46625,
+  UDP_PORT: 49369,
 
   // NOTE: Ideally we'd set this w/ a 2MB socket buffer. Can't do this in nodejs AFAIK.
   OUTGOING_SOCK: dgram.createSocket("udp4"),

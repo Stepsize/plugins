@@ -16,7 +16,7 @@ import java.util.List;
 public class StepsizeLocalhostConnection {
 
     private static final String UDP_HOST = "127.0.0.1";
-    private static final int UDP_PORT = 46625;
+    private static final int UDP_PORT = 49369;
     private static final int INBOUND_RECEIVE_BUFFER_SIZE = 10*1024*2014;  // 10 MB
 
     private StepsizeProjectComponent m_projectComponent;

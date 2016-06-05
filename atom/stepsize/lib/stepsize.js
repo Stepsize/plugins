@@ -8,7 +8,7 @@ var DEBUG = false;
 
 // StepsizeOutgoing contains logic for sending events to Stepsize in response to
 // editor actions. We track edit, selections, and focus. These events
-// are sent to a UDP server listening on 127.0.0.1:46625.
+// are sent to a UDP server listening on 127.0.0.1:49369.
 var StepsizeOutgoing = {
   UDP_HOST: "127.0.0.1",
   UDP_PORT: 49369,

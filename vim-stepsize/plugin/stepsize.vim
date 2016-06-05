@@ -39,7 +39,7 @@ def send_event(action, filename):
         event['action'] = 'skip'
         event['selected'] = 'file_too_large'
 
-    SOCK_ADDRESS = ('localhost', 46625)
+    SOCK_ADDRESS = ('localhost', 49369)
     SOCK_BUF_SIZE = 2 << 20
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, SOCK_BUF_SIZE)

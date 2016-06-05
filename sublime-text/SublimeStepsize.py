@@ -24,7 +24,7 @@ FIX_APPLY_ERROR = """It is with great regret we must inform you that we cannot a
 
 
 class SublimeStepsize(sublime_plugin.EventListener, threading.Thread):
-    SOCK_ADDRESS = ('localhost', 46625)
+    SOCK_ADDRESS = ('localhost', 49369)
     SOCK_BUF_SIZE = 2 << 20  # 2MB
 
     # Write to TCP socket with UDP protocol

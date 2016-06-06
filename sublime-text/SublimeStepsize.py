@@ -17,11 +17,6 @@ import base64
 
 PYTHON_VERSION = sys.version_info[0]
 
-FIX_APPLY_ERROR = """It is with great regret we must inform you that we cannot apply the suggested fix. Please contact support@stepsize.com if the problem persists.
-
-- Stepsize Team
-"""
-
 
 class SublimeStepsize(sublime_plugin.EventListener, threading.Thread):
     SOCK_ADDRESS = ('localhost', 49369)

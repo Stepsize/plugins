@@ -1,8 +1,8 @@
-## Installing the Layer Atom plugin
+## Installing the Stepsize Layer plugin for Atom
 
 #### The right way – terminal command
 
-`cd ~/.atom/packages && wget https://github.com/Stepsize/plugins/archive/master.zip && unzip master.zip && mv plugins-master/atom/stepsize . && rm -rf master.zip && rm -rf plugins-master`
+`wget https://github.com/Stepsize/plugins/archive/master.zip && unzip master.zip && mv plugins-master/atom/stepsize ~/.atom/packages && rm -rf plugins-master master.zip`
 
 Restart Atom after running this command and you're good to go!
 
@@ -10,9 +10,9 @@ Note: if somehow your Atom support directory is not located at `~/.atom`, change
 
 #### The manual way – clicking, dragging & dropping
 
-- Download the Stepsize plugin zip file [here](https://github.com/Stepsize/plugins/archive/master.zip)
+- Download the Stepsize Layer plugin zip file [here](https://github.com/Stepsize/plugins/archive/master.zip)
 - Find it in your downloads directory and double click to unzip it – it will create a directory called `plugins-master`
-- Inside it that directory, there's a directory named `atom`, and inside this one a directory named `stepsize`
+- Inside it that directory, there's a directory named `atom`, and inside it a directory named `stepsize`
   - Copy the `stepsize` directory
   - Find your Atom packages directory – by default, it's in your home directory `~/.atom/packages`
   - Paste the `stepsize` directory inside the atom `packages` directory

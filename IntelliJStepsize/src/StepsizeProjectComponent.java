@@ -1,6 +1,6 @@
 // Contents of this plugin will be reset by Stepsize on start. Changes you make are not guaranteed to persist.
-
-
+//
+//
 // Internal Stepsize note: to enable gathering output (stdout+stderr) of debug runs, uncomment the code related
 //   to XDebugProcess.
 // Note this will prevent our plugin from running on PyCharm builds < PC-139.1659 (~April 2015).
@@ -237,11 +237,11 @@ public class StepsizeProjectComponent implements ProjectComponent, DocumentListe
         });
     }
 
-    @Override
+
     public void caretAdded(CaretEvent caretEvent) {
     }
 
-    @Override
+
     public void caretRemoved(CaretEvent caretEvent) {
     }
 

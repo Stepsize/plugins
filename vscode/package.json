@@ -13,19 +13,6 @@
     "activationEvents": [
       "*"
     ],
-    "contributes": {
-      "commands": [{
-          "command": "extension.send",
-          "title": "Stepsizzle"
-      }],
-      "keybindings": [
-          {
-            "command": "extension.send",
-            "key": "ctrl+s",
-            "mac": "cmd+s"
-          }
-      ]
-    },
     "main": "./extension",
     "scripts": {
         "postinstall": "node ./node_modules/vscode/bin/install"

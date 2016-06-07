@@ -13,8 +13,13 @@ function activate(context) {
 
     var socket = dgram.createSocket("udp4"), pending = [];
 
+    vscode.workspace.onDidOpenTextDocument(function (document) {
+      var data = { filename: document.fileName, selected: '' }
+      var message = JSON.stringify(data);
+      socket.send(message, 0, message.length, UDP_PORT, UDP_HOST);
+    })
+
     vscode.window.onDidChangeTextEditorSelection(function (event) {
-      // console.log(event);
       pending.push(event);
     })
 

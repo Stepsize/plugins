@@ -1,6 +1,18 @@
+function! s:get_visual_selection()
+  let [lnum1, col1] = getpos("v")[1:2]
+  let [lnum2, col2] = getpos(".")[1:2]
+  let lines = getline(lnum1, lnum2)
+  return join(lines, "\n")
+endfunction
+
 function! PyStepsizeEvent(action)
     let l:filename = expand("%:p")
-    let l:selected = getline('.')
+    let currentmode = mode()
+    if currentmode =~? '.*v'
+      let l:selected = s:get_visual_selection()
+    else
+      let l:selected = getline('.')
+    endif
 python << endpython
 import vim
 import os

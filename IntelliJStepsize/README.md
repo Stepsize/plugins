@@ -1,6 +1,6 @@
 ## Installing the Stepsize Layer plugin for JetBrains IDEs
 
-The plugin works with all JetBrains IDEs – IntelliJ IDEA, PyCharm, PhpStorm, etc.
+The plugin works with all JetBrains IDEs – IntelliJ IDEA, PyCharm, PhpStorm, etc. as well as AndroidStudio.
 
 - Download the Stepsize Layer plugin zip file [here](https://github.com/Stepsize/plugins/archive/master.zip)
 - Find it in your downloads directory and double click to unzip it – it will create a directory called `plugins-master`

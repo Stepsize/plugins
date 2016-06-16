@@ -19,6 +19,8 @@ import os
 import json
 import socket
 
+pluginId = 'vim_v0.0.1'
+
 def cursor_pos(buf, pos):
     (line, col) = pos
     return sum(len(l) for l in buf[:line-1]) + col + (line-1)
@@ -44,7 +46,8 @@ def send_event(action, filename):
         'action': action,
         'filename': realpath(filename),
         'selected': selected,
-        'selections': [{'start': pos, 'end': pos}]
+        'selections': [{'start': pos, 'end': pos}],
+        'plugin_id': pluginId
     }
 
     if len(event['selected']) > (1 << 20): # 1mb

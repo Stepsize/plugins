@@ -16,7 +16,7 @@ import base64
 
 
 PYTHON_VERSION = sys.version_info[0]
-
+pluginId = 'sublime_v0.0.1'
 
 class SublimeStepsize(sublime_plugin.EventListener, threading.Thread):
     SOCK_ADDRESS = ('localhost', 49369)
@@ -78,7 +78,8 @@ class SublimeStepsize(sublime_plugin.EventListener, threading.Thread):
             'action': action,
             'filename': realpath(view.file_name()),
             'selections': selections,
-            'selected': selected
+            'selected': selected,
+            'plugin_id': pluginId
         })
 
         if PYTHON_VERSION >= 3:
@@ -92,7 +93,8 @@ class SublimeStepsize(sublime_plugin.EventListener, threading.Thread):
             'source': 'sublime-text',
             'action': 'error',
             'filename': realpath(view.file_name()),
-            'selected': json.dumps(data)
+            'selected': json.dumps(data),
+            'plugin_id': pluginId
         })
 
         if PYTHON_VERSION >= 3:

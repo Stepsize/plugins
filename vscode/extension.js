@@ -3,6 +3,7 @@
 var vscode = require('vscode');
 var dgram = require('dgram');
 var UDP_HOST =  "127.0.0.1", UDP_PORT = 49369;
+var pluginId = 'vscode_v0.0.1';
 
 // this method is called when your extension is activated
 function activate(context) {
@@ -14,7 +15,9 @@ function activate(context) {
     var socket = dgram.createSocket("udp4"), pending = [];
 
     vscode.workspace.onDidOpenTextDocument(function (document) {
-      var data = { filename: document.fileName, selected: '' }
+      var data = {
+        filename: document.fileName, selected: '', plugin_id: pluginId
+      }
       var message = JSON.stringify(data);
       socket.send(message, 0, message.length, UDP_PORT, UDP_HOST);
     })
@@ -28,7 +31,8 @@ function activate(context) {
         var event = pending[pending.length - 1];
         var data = {
           filename: event.textEditor._documentData._document.fileName,
-          selected: getSelected(event.textEditor._documentData._lines, event.selections[0])
+          selected: getSelected(event.textEditor._documentData._lines, event.selections[0]),
+          plugin_id: pluginId
         }
         var message = JSON.stringify(data);
         socket.send(message, 0, message.length, UDP_PORT, UDP_HOST);

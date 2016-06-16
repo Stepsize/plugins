@@ -5,6 +5,7 @@ var dgram = require('dgram');
 var fs = require('fs');
 
 var DEBUG = false;
+var pluginId = 'atom_v0.0.1';
 
 // StepsizeOutgoing contains logic for sending events to Stepsize in response to
 // editor actions. We track edit, selections, and focus. These events
@@ -73,7 +74,8 @@ var StepsizeOutgoing = {
       'source': 'atom',
       'action': "error",
       'filename': fs.realpathSync(editor.getPath()),
-      'selected': JSON.stringify(data)
+      'selected': JSON.stringify(data),
+      'plugin_id': pluginId
     };
     var msg = JSON.stringify(event);
     this.OUTGOING_SOCK.send(msg, 0, msg.length, this.UDP_PORT, this.UDP_HOST);
@@ -111,7 +113,8 @@ var StepsizeOutgoing = {
         "start": cursorOffset,
         "end": cursorOffset,
       }],
-      "selected": editor.getSelectedText()
+      "selected": editor.getSelectedText(),
+      'plugin_id': pluginId
     };
   },
   // pointToOffet takes the contents of the buffer and a point object

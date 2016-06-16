@@ -18,6 +18,7 @@ public class StepsizeLocalhostConnection {
     private static final String UDP_HOST = "127.0.0.1";
     private static final int UDP_PORT = 49369;
     private static final int INBOUND_RECEIVE_BUFFER_SIZE = 10*1024*2014;  // 10 MB
+    private static final String PLUGIN_ID = "intellij_v0.0.1";
 
     private StepsizeProjectComponent m_projectComponent;
     private DatagramSocket m_outbound;
@@ -43,7 +44,7 @@ public class StepsizeLocalhostConnection {
         event.action = action;
         event.filename = filename;
         event.selected = text.substring(selStart, selEnd);
-        event.pluginId = m_pluginID;
+        event.plugin_id = PLUGIN_ID;
 
         OutboundEventSelectionRange selRange = new OutboundEventSelectionRange();
         selRange.start = selStart;
@@ -77,7 +78,7 @@ public class StepsizeLocalhostConnection {
         event.action = "error";
         event.filename = filename;
         event.selected = text;
-        event.pluginId = m_pluginID;
+        event.plugin_id = PLUGIN_ID;
         sendJson(new Gson().toJson(event));
     }
 
@@ -148,7 +149,7 @@ class OutboundEvent {
     String action;
     String filename;
     String selected;
-    String pluginId;
+    String plugin_id;
     List<OutboundEventSelectionRange> selections;
 }
 
@@ -162,7 +163,7 @@ class OutboundErrorEvent {
     String action;
     String filename;
     String selected;
-    String pluginId;
+    String plugin_id;
 }
 
 class OutboundSuggestionErrorDetails {

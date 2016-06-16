@@ -16,7 +16,7 @@ import base64
 
 
 PYTHON_VERSION = sys.version_info[0]
-pluginId = 'sublime_v0.0.1'
+pluginId = 'sublime-text_v0.0.1'
 
 class SublimeStepsize(sublime_plugin.EventListener, threading.Thread):
     SOCK_ADDRESS = ('localhost', 49369)

@@ -3,10 +3,15 @@
   "main": "./lib/stepsize",
   "version": "0.0.1",
   "description": "A simple plugin to make Atom work with Stepsize Layer",
+  "homepage": "https://github.com/stepsize/plugins",
   "keywords": [],
   "license": "MIT",
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Stepsize/plugins.git"
+  }
 }

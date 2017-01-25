@@ -16,7 +16,7 @@ import base64
 
 
 PYTHON_VERSION = sys.version_info[0]
-pluginId = 'sublime-text_v0.0.1'
+pluginId = 'sublime-text_v0.0.2'
 
 class SublimeStepsize(sublime_plugin.EventListener, threading.Thread):
     SOCK_ADDRESS = ('localhost', 49369)
@@ -73,13 +73,23 @@ class SublimeStepsize(sublime_plugin.EventListener, threading.Thread):
             action = 'skip'
             selected = 'file_too_large'
 
+        selected_line_numbers = []
+        for r in view.sel():
+            start = view.rowcol(r.a)[0] + 1
+            end = view.rowcol(r.b)[0] + 1
+            if start <= end:
+                selected_line_numbers += range(start, end + 1)
+            else:
+                selected_line_numbers += range(end, start + 1)
+
         json_body = json.dumps({
             'source': 'sublime-text',
             'action': action,
             'filename': realpath(view.file_name()),
             'selections': selections,
             'selected': selected,
-            'plugin_id': pluginId
+            'plugin_id': pluginId,
+            'selectedLineNumbers': selected_line_numbers
         })
 
         if PYTHON_VERSION >= 3:

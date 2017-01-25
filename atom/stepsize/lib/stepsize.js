@@ -1,3 +1,5 @@
+'use babel';
+
 // Contents of this plugin will be reset by Stepsize on start. Changes you make
 // are not guaranteed to persist.
 
@@ -5,7 +7,7 @@ var dgram = require('dgram');
 var fs = require('fs');
 
 var DEBUG = false;
-var pluginId = 'atom_v0.0.1';
+var pluginId = 'atom_v0.0.2';
 
 // StepsizeOutgoing contains logic for sending events to Stepsize in response to
 // editor actions. We track edit, selections, and focus. These events
@@ -104,7 +106,13 @@ var StepsizeOutgoing = {
     var text = editor.getText();
     var cursorPoint = editor.getCursorBufferPosition();
     var cursorOffset = this.pointToOffset(text, cursorPoint);
-
+    var selectedLineNumbers = editor.getSelectedBufferRanges().reduce((acc, range) => {
+      if (range.start.row === range.end.row && range.start.column === range.end.column) return acc;
+      var numbers = [...Array(range.end.row - range.start.row + 1).keys()]
+        .map(key => key + range.start.row + 1);
+      acc.push(...numbers);
+      return acc;
+    }, []);
     return {
       "source": "atom",
       "action": action,
@@ -114,7 +122,8 @@ var StepsizeOutgoing = {
         "end": cursorOffset,
       }],
       "selected": editor.getSelectedText(),
-      'plugin_id': pluginId
+      'plugin_id': pluginId,
+      selectedLineNumbers,
     };
   },
   // pointToOffet takes the contents of the buffer and a point object

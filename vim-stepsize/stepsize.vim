@@ -1,8 +1,12 @@
 function! s:get_visual_selection()
   let [lnum1, col1] = getpos("v")[1:2]
   let [lnum2, col2] = getpos(".")[1:2]
-  let lines = getline(lnum1, lnum2)
-  return join(lines, "\n")
+  if lnum1 <= lnum2
+    let lines = getline(lnum1, lnum2)
+  else
+    let lines = getline(lnum2, lnum1)
+  endif
+  return [join(lines, "\n"), lnum1, lnum2]
 endfunction
 
 function! PyStepsizeEvent(action)
@@ -11,7 +15,8 @@ function! PyStepsizeEvent(action)
     if currentmode =~? '.*v'
       let l:selected = s:get_visual_selection()
     else
-      let l:selected = getline('.')
+      "let l:selected = getline('.')
+      let l:selected = ''
     endif
 python << endpython
 import vim
@@ -19,7 +24,7 @@ import os
 import json
 import socket
 
-pluginId = 'vim_v0.0.1'
+pluginId = 'vim_v0.0.2'
 
 def cursor_pos(buf, pos):
     (line, col) = pos
@@ -38,14 +43,23 @@ def send_event(action, filename):
     text = '\n'.join(vim.current.buffer)
     selections = [{'start': pos, 'end': pos}]
     selected = vim.eval("l:selected")
+    selected_line_numbers = []
     if selected == '0':
       selected = ''
+    elif type(selected) is list:
+      selected_line_numbers = [int(selected[1]), int(selected[2])]
+      if selected_line_numbers[0] <= selected_line_numbers[1]:
+        selected_line_numbers = range(selected_line_numbers[0], selected_line_numbers[1] + 1)
+      else:
+        selected_line_numbers = range(selected_line_numbers[1], selected_line_numbers[0] + 1)
+      selected = selected[0]
 
     event = {
         'source': 'vim',
         'action': action,
         'filename': realpath(filename),
         'selected': selected,
+        'selectedLineNumbers': selected_line_numbers,
         'selections': [{'start': pos, 'end': pos}],
         'plugin_id': pluginId
     }

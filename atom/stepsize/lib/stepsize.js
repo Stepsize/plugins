@@ -108,6 +108,7 @@ var StepsizeOutgoing = {
     var cursorOffset = this.pointToOffset(text, cursorPoint);
     var selectedLineNumbers = editor.getSelectedBufferRanges().reduce((acc, range) => {
       if (range.start.row === range.end.row && range.start.column === range.end.column) return acc;
+      if (range.end.column === 0 && range.end.row > 0) range.end.row -= 1;
       var numbers = [...Array(range.end.row - range.start.row + 1).keys()]
         .map(key => key + range.start.row + 1);
       acc.push(...numbers);

@@ -1,5 +1,7 @@
 # Stepsize Layer Plugins
 
+Please click on the folder for your editor to see complete instructions to install the plugins.
+
 Work in progress...
 
 ## License

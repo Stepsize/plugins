@@ -12,7 +12,7 @@ Restart Vim after running this command and you're good to go!
 - Find it in your downloads directory and double click to unzip it – it will create a directory called `plugins-master`
 - Inside it that directory, there's a directory named `vim-stepsize`, and inside it a file named `stepsize.vim`
   - Find your Vim plugin directory – by default, it's `~/.vim/plugin`
-  - Create a new directory called `Stepsize` inside the plugin folder, and inside that new directory paste the `stepsize.vim` file
+  - Create a new directory called `stepsize` inside the plugin folder, and inside that new directory paste the `stepsize.vim` file
 - Restart Vim
 
 You're good to go!

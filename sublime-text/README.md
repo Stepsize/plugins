@@ -14,7 +14,7 @@ Restart Sublime Text after running this command and you're good to go!
 - Find it in your downloads directory and double click to unzip it – it will create a directory called `plugins-master`
 - Inside it that directory, there's a directory named `sublime-text`, and inside it a file named `SublimeStepsize.py`
   - Find your Sublime packages directory – by default, it's `~/Library/Application \Support/Sublime\ Text 2/Packages` (or `Sublime\ Text 3`)
-  - Create a new directory called `Stepsize` inside `Packages`, and inside that new directory paste the `SublimeStepsize.py` file
+  - Create a new directory called `stepsize` inside `Packages`, and inside that new directory paste the `SublimeStepsize.py` file
 - Restart Sublime Text
 
 You're good to go!

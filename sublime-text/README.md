@@ -18,3 +18,9 @@ Restart Sublime Text after running this command and you're good to go!
 - Restart Sublime Text
 
 You're good to go!
+
+## Uninstalling the Stepsize Layer plugin for Sublime Text
+
+Simply remove the `stepsize` directory from your Sublime packages directory, located at `~/Library/Application Support/Sublime Text 2/Packages` by default (replace `Sublime Text 2` with `Sublime Text 3` if that's the version you're using).
+
+You can do this by running the command `rm -rf ~/Library/Application\ Support/Sublime\ Text\ 2/Packages/stepsize`.

@@ -9,3 +9,7 @@ The plugin works with all JetBrains IDEs – IntelliJ IDEA, PyCharm, PhpStorm, e
 - Click `Install plugin from disk...`
 - Find the `plugins-master` directory you just downloaded, and select the `stepsize_intellij.jar` file inside the `IntelliJStepsize` directory and click `OK`
 - Click the `Restart IDE` button and you're good to go!
+
+## Uninstalling the Stepsize Layer plugin for JetBrains IDEs
+
+Simply remove the `stepsize_intellij.jar` file from the support directory for your JetBrains IDE, usually located at `~/Library/Application Support/<IDE name + version>` by default.

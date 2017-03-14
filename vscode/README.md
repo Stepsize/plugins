@@ -19,3 +19,9 @@ Note: if somehow your Visual Studio Code support directory is not located at `~/
 - Restart Visual Studio Code
 
 You're good to go!
+
+## Uninstalling the Stepsize Layer plugin for Visual Studio Code
+
+Simply remove the `stepsize-layer` directory from your Visual Studio Code extensions directory, located at `~/.vscode/extensions` by default.
+
+You can do this by running the command `rm -rf ~/.vscode/extensions/stepsize-layer`.

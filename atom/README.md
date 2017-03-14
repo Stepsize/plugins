@@ -19,3 +19,9 @@ Note: if somehow your Atom support directory is not located at `~/.atom`, change
 - Restart Atom
 
 You're good to go!
+
+## Uninstalling the Stepsize Layer plugin for Atom
+
+Simply remove the `stepsize` directory from your Atom packages directory, located at `~/.atom/packages` by default.
+
+You can do this by running the command `rm -rf ~/.atom/packages/stepsize`.

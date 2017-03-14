@@ -16,3 +16,9 @@ Restart Vim after running this command and you're good to go!
 - Restart Vim
 
 You're good to go!
+
+## Uninstalling the Stepsize Layer plugin for Vim
+
+Simply remove the `stepsize` directory from your Vim plugins directory, located at `~/.vim/plugin` by default.
+
+You can do this by running the command `rm -rf ~/.vim/plugin/stepsize`.

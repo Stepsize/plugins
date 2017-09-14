@@ -3,47 +3,28 @@
 var vscode = require('vscode');
 var dgram = require('dgram');
 var UDP_HOST =  "127.0.0.1", UDP_PORT = 49369;
-var pluginId = 'vscode_v0.0.2';
+var pluginId = 'vscode_v0.0.3';
 
 // this method is called when your extension is activated
 function activate(context) {
-
-    // Use the console to output diagnostic information (console.log) and errors (console.error)
-    // This line of code will only be executed once when your extension is activated
-    console.log('Congratulations, your extension "Stepsize Layer" is now active!');
-
-    var socket = dgram.createSocket("udp4"), pending = [];
+    var socket = dgram.createSocket('udp4');
 
     vscode.workspace.onDidOpenTextDocument(function (document) {
-      var data = {
-        filename: document.fileName, selected: '', plugin_id: pluginId
-      }
-      var message = JSON.stringify(data);
+      const editor = vscode.window.activeTextEditor;
+      const filename = editor ? editor._documentData._document.fileName : null;  // `document.fileName` appends `.git` to paths for no apparent reason
+      const selectedLineNumbers = editor ? getSelectedLineNumbers(editor.selections) : [];
+      const data = { filename, selectedLineNumbers, plugin_id: pluginId };
+      const message = JSON.stringify(data);
       socket.send(message, 0, message.length, UDP_PORT, UDP_HOST);
-    })
+    });
 
     vscode.window.onDidChangeTextEditorSelection(function (event) {
-      var selectedLineNumbers = getSelectedLineNumbers(event.selections);
-      var data = {
-        selectedLineNumbers,
-        filename: event.textEditor._documentData._document.fileName,
-        selected: getSelected(event.textEditor._documentData._lines, event.selections[0]),
-        plugin_id: pluginId
-      };
-      var message = JSON.stringify(data);
+      const filename = event.textEditor._documentData._document.fileName;
+      const selectedLineNumbers = getSelectedLineNumbers(event.selections);
+      const data = { filename, selectedLineNumbers, plugin_id: pluginId };
+      const message = JSON.stringify(data);
       socket.send(message, 0, message.length, UDP_PORT, UDP_HOST);
-      pending.push(event);
     });
-
-    // The command has been defined in the package.json file
-    // Now provide the implementation of the command with  registerCommand
-    // The commandId parameter must match the command field in package.json
-    var disposable = vscode.commands.registerCommand('extension.send', function () {
-        // The code you place here will be executed every time your command is executed
-        //not used by stepsize right now just left it here as an example
-    });
-
-    context.subscriptions.push(disposable);
 }
 exports.activate = activate;
 

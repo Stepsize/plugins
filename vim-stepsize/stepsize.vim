@@ -24,7 +24,7 @@ import os
 import json
 import socket
 
-pluginId = 'vim_v0.0.2'
+pluginId = 'vim_v0.0.3'
 
 def cursor_pos(buf, pos):
     (line, col) = pos
@@ -37,10 +37,9 @@ def realpath(p):
         return p
 
 def send_event(action, filename):
+    realname = realpath(filename) if filename else None
     pos = cursor_pos(list(vim.current.buffer),
                     vim.current.window.cursor)
-
-    text = '\n'.join(vim.current.buffer)
     selections = [{'start': pos, 'end': pos}]
     selected = vim.eval("l:selected")
     selected_line_numbers = []
@@ -57,16 +56,10 @@ def send_event(action, filename):
     event = {
         'source': 'vim',
         'action': action,
-        'filename': realpath(filename),
-        'selected': selected,
+        'filename': realname,
         'selectedLineNumbers': selected_line_numbers,
-        'selections': [{'start': pos, 'end': pos}],
         'plugin_id': pluginId
     }
-
-    if len(event['selected']) > (1 << 20): # 1mb
-        event['action'] = 'skip'
-        event['selected'] = 'file_too_large'
 
     SOCK_ADDRESS = ('localhost', 49369)
     SOCK_BUF_SIZE = 2 << 20

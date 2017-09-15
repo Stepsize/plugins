@@ -7,7 +7,7 @@ var dgram = require('dgram');
 var fs = require('fs');
 
 var DEBUG = false;
-var pluginId = 'atom_v0.0.2';
+var pluginId = 'atom_v0.0.3';
 
 // StepsizeOutgoing contains logic for sending events to Stepsize in response to
 // editor actions. We track edit, selections, and focus. These events
@@ -76,7 +76,6 @@ var StepsizeOutgoing = {
       'source': 'atom',
       'action': "error",
       'filename': fs.realpathSync(editor.getPath()),
-      'selected': JSON.stringify(data),
       'plugin_id': pluginId
     };
     var msg = JSON.stringify(event);
@@ -104,8 +103,6 @@ var StepsizeOutgoing = {
   // "action" field of the event to the provided value.
   buildEvent: function(editor, action) {
     var text = editor.getText();
-    var cursorPoint = editor.getCursorBufferPosition();
-    var cursorOffset = this.pointToOffset(text, cursorPoint);
     var selectedLineNumbers = editor.getSelectedBufferRanges().reduce((acc, range) => {
       if (range.start.row === range.end.row && range.start.column === range.end.column) return acc;
       if (range.end.column === 0 && range.end.row > 0) range.end.row -= 1;
@@ -118,11 +115,6 @@ var StepsizeOutgoing = {
       "source": "atom",
       "action": action,
       "filename": editor.getPath(),
-      "selections": [{
-        "start": cursorOffset,
-        "end": cursorOffset,
-      }],
-      "selected": editor.getSelectedText(),
       'plugin_id': pluginId,
       selectedLineNumbers,
     };

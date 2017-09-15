@@ -16,7 +16,7 @@ import base64
 
 
 PYTHON_VERSION = sys.version_info[0]
-pluginId = 'sublime-text_v0.0.2'
+pluginId = 'sublime-text_v0.0.3'
 
 class SublimeStepsize(sublime_plugin.EventListener, threading.Thread):
     SOCK_ADDRESS = ('localhost', 49369)
@@ -59,52 +59,23 @@ class SublimeStepsize(sublime_plugin.EventListener, threading.Thread):
         if group == -1 and index == -1:
             return
 
-        full_region = sublime.Region(0, view.size())
-        full_text = view.substr(full_region)
-        selections = [{'start': r.a, 'end': r.b} for r in view.sel()]
-        selected = ''
-        for sel in selections:
-            start = min(sel['start'], sel['end'])
-            end = max(sel['start'], sel['end'])
-            selected += full_text[start:end]
-
-        # skip content over 1mb
-        if len(selected) > (1 << 20): # 1mb
-            action = 'skip'
-            selected = 'file_too_large'
-
         selected_line_numbers = []
         for r in view.sel():
-            start = view.rowcol(r.a)[0] + 1
-            end = view.rowcol(r.b)[0] + 1
-            if start <= end:
-                selected_line_numbers += range(start, end + 1)
+            start = view.rowcol(r.a)
+            end = view.rowcol(r.b)
+            if start[0] == end[0] and start[1] == end[1]:
+                continue
+            elif start[0] <= end[0]:
+                selected_line_numbers += range(start[0] + 1, end[0] + 2)
             else:
-                selected_line_numbers += range(end, start + 1)
+                selected_line_numbers += range(end[0] + 1, start[0] + 2)
 
         json_body = json.dumps({
             'source': 'sublime-text',
             'action': action,
             'filename': realpath(view.file_name()),
-            'selections': selections,
-            'selected': selected,
             'plugin_id': pluginId,
             'selectedLineNumbers': selected_line_numbers
-        })
-
-        if PYTHON_VERSION >= 3:
-            json_body = bytes(json_body, "utf-8")
-
-        self._write_sock(json_body)
-
-    def _error(self, data):
-        view = sublime.active_window().active_view()
-        json_body = json.dumps({
-            'source': 'sublime-text',
-            'action': 'error',
-            'filename': realpath(view.file_name()),
-            'selected': json.dumps(data),
-            'plugin_id': pluginId
         })
 
         if PYTHON_VERSION >= 3:

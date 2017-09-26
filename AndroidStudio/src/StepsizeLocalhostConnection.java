@@ -12,13 +12,14 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 public class StepsizeLocalhostConnection {
 
     private static final String UDP_HOST = "127.0.0.1";
     private static final int UDP_PORT = 49369;
     private static final int INBOUND_RECEIVE_BUFFER_SIZE = 10*1024*2014;  // 10 MB
-    private static final String PLUGIN_ID = "android-studio_v0.0.1";
+    private static final String PLUGIN_ID = "android-studio_v0.0.2";
 
     private StepsizeProjectComponent m_projectComponent;
     private DatagramSocket m_outbound;
@@ -39,7 +40,7 @@ public class StepsizeLocalhostConnection {
 
 
     // -----outbound-----
-    public void sendEvent(String action, String filename, String text, int selStart, int selEnd) throws Exception {
+    public void sendEvent(String action, String filename, String text, int selStart, int selEnd, int startLineNumber, int endLineNumber) throws Exception {
         OutboundEvent event = new OutboundEvent();
         event.action = action;
         event.filename = filename;
@@ -51,6 +52,12 @@ public class StepsizeLocalhostConnection {
         selRange.end = selEnd;
         event.selections = new ArrayList<OutboundEventSelectionRange>();
         event.selections.add(selRange);
+
+        if (selStart == selEnd) {
+          event.selectedLineNumbers = new int[0];
+        } else {
+          event.selectedLineNumbers = IntStream.rangeClosed(startLineNumber, endLineNumber).toArray();
+        }
 
         if(text.length() > 1024 * 1024) {
             event.action = "skip";
@@ -151,6 +158,7 @@ class OutboundEvent {
     String selected;
     String plugin_id;
     List<OutboundEventSelectionRange> selections;
+    int[] selectedLineNumbers;
 }
 
 class OutboundEventSelectionRange {

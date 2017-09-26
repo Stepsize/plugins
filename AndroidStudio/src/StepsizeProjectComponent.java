@@ -262,9 +262,11 @@ public class StepsizeProjectComponent implements ProjectComponent, DocumentListe
                 return;
             }
 
+            int start = editor.offsetToLogicalPosition(editor.getSelectionModel().getSelectionStart()).line + 1;
+            int end = editor.offsetToLogicalPosition(editor.getSelectionModel().getSelectionEnd()).line + 1;
             m_StepsizeConnection.sendEvent(action, file.getCanonicalPath(),
                     editor.getDocument().getText(), editor.getSelectionModel().getSelectionStart(),
-                    editor.getSelectionModel().getSelectionEnd());
+                    editor.getSelectionModel().getSelectionEnd(), start, end);
         } catch (Exception e) {
             logException("Exception sending event", e);
         }
